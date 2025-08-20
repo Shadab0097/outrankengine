@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node src/app.js",
-    "dev": "nodemon src/app.js",
-     "postinstall": "puppeteer install chrome"
+    "postinstall": "npx puppeteer browsers install chrome",
+    "dev": "nodemon src/app.js"
   },
   "author": "shadab khan",
   "license": "ISC",
