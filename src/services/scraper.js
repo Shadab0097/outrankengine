@@ -118,6 +118,7 @@ async function scraperUrl(urls) {
         // Launch browser once for all operations
         browser = await puppeteer.launch({
             headless: true,
+            executablePath: '/tmp/puppeteer-cache/chrome/linux-139.0.7258.66/chrome-linux64/chrome',
             args: [
                 '--no-sandbox',
                 '--disable-setuid-sandbox',
