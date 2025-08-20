@@ -1,0 +1,31 @@
+{
+  "name": "seo-analyzer",
+  "version": "1.0.0",
+  "description": "s",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js"
+  },
+  "author": "shadab khan",
+  "license": "ISC",
+  "dependencies": {
+    "@google/genai": "^1.12.0",
+    "@google/generative-ai": "^0.24.1",
+    "axios": "^1.11.0",
+    "bcrypt": "^6.0.0",
+    "cheerio": "^1.1.2",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.17.0",
+    "nodemailer": "^7.0.5",
+    "puppeteer": "^24.16.0",
+    "puppeteer-extra": "^3.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2",
+    "validator": "^13.15.15",
+    "whatwg-url": "^14.2.0"
+  }
+}
