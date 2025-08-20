@@ -109,8 +109,8 @@ const puppeteer = require('puppeteer-extra');
 const StealthPlugin = require('puppeteer-extra-plugin-stealth');
 
 puppeteer.use(StealthPlugin());
-const executablePath = puppeteer.executablePath();
-console.log(executablePath)
+
+
 
 async function scraperUrl(urls) {
     let browser;
@@ -120,7 +120,7 @@ async function scraperUrl(urls) {
         // Launch browser once for all operations
         browser = await puppeteer.launch({
             headless: true,
-            executablePath,
+
             args: [
                 '--no-sandbox',
                 '--disable-setuid-sandbox',
