@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node src/app.js",
     "dev": "nodemon src/app.js",
-     "postinstall": "puppeteer install"
+     "postinstall": "puppeteer install chrome"
   },
   "author": "shadab khan",
   "license": "ISC",
