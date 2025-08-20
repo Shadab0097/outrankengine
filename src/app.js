@@ -1,3 +1,4 @@
+const fs = require('fs');
 const puppeteerCacheDir = '/tmp/puppeteer-cache';
 if (!fs.existsSync(puppeteerCacheDir)) {
     fs.mkdirSync(puppeteerCacheDir, { recursive: true });
@@ -7,7 +8,6 @@ process.env.PUPPETEER_CACHE_DIR = puppeteerCacheDir;
 console.log('Set PUPPETEER_CACHE_DIR to:', process.env.PUPPETEER_CACHE_DIR);
 const express = require('express')
 const { getScrapedRouter } = require('./router/getScraperResult')
-const fs = require('fs');
 
 
 
