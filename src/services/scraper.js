@@ -121,7 +121,7 @@ async function scraperUrl(urls) {
 
         // Launch browser once for all operations
         browser = await puppeteer.launch({
-            executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || "/usr/bin/google-chrome",
+            executablePath: puppeteer.executablePath(),
             headless: true,
 
             args: [
