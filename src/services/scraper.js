@@ -128,7 +128,10 @@ async function scraperUrl(urls) {
                 '--disable-setuid-sandbox',
                 '--disable-dev-shm-usage',
                 '--disable-web-security',
-                '--disable-features=VizDisplayCompositor'
+                '--disable-features=VizDisplayCompositor',
+                '--single-procee',
+                '--no-zygote',
+
             ]
         });
 
