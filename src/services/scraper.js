@@ -105,7 +105,7 @@
 // module.exports = { scraperUrl };
 
 
-// const { executablePath } = require('puppeteer');
+const { executablePath } = require('puppeteer');
 
 const puppeteer = require('puppeteer-extra');
 const StealthPlugin = require('puppeteer-extra-plugin-stealth');
@@ -121,7 +121,7 @@ async function scraperUrl(urls) {
 
         // Launch browser once for all operations
         browser = await puppeteer.launch({
-
+            executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || "/usr/bin/google-chrome",
             headless: true,
 
             args: [

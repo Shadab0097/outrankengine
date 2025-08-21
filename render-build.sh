@@ -1,39 +1,16 @@
 #!/usr/bin/env bash
-#exit on error
-
+# Exit on error
 set -o errexit
 
-#Install dependencies
-
+# Install dependencies
 npm install
 
-# Uncomment this line if you need to build your project
+# Build project if needed
+# npm run build
 
-#npm run build
-
- #Ensure the Puppeteer cache directory exists
-
-PUPPETEER_CACHE_DIR=/opt/render/.cache/puppeteer/chrome/linux-139.0.7258.66/chrome-linux64/chrome
-
+# Set Puppeteer cache directory to /tmp (safe for Render)
+export PUPPETEER_CACHE_DIR=/tmp/puppeteer
 mkdir -p $PUPPETEER_CACHE_DIR
 
-#Install Puppeteer and download Chrome
-
+# Install Chrome for Puppeteer
 npx puppeteer browsers install chrome
-
-#Store/pull Puppeteer cache with build cache
-
-if [[ ! -d $PUPPETEER_CACHE_DIR ]]; then
-
-echo "...Copying Puppeteer Cache from Build Cache"
-
-#Copying from the actual path where Puppeteer stores its Chrome binary
-
-cp -R /opt/render/.cache/puppeteer/chrome/linux-139.0.7258.66/chrome-linux64/chrome $PUPPETEER_CACHE_DIR
-
-else
-echo "...Storing Puppeteer Cache in Build Cache"
-cp -R $PUPPETEER_CACHE_DIR /opt/render/.cache/puppeteer/chrome/linux-139.0.7258.66/chrome-linux64/chrome
-fi 
-
-
