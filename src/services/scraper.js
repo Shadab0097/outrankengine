@@ -120,7 +120,7 @@ async function scraperUrl(urls) {
     try {
         // Launch browser once for all operations
         browser = await puppeteer.launch({
-            executablePath: "C:\Users\dilsh\.cache\puppeteer\chrome\win64-139.0.7258.66\chrome-win64\chrome.exe",
+
             headless: true,
 
             args: [
