@@ -120,7 +120,7 @@ async function scraperUrl(urls) {
 
         // Launch browser once for all operations
         browser = await puppeteer.launch({
-            executablePath: puppeteer.executablePath(),
+            executablePath: process.env.NODE_ENV === 'production' ? process.env.PUPPETEER_EXECUTABLE_PATH : puppeteer.executablePath(),
             headless: true,
 
             args: [
