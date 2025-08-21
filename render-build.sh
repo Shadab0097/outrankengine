@@ -13,7 +13,7 @@ npm install
 
  #Ensure the Puppeteer cache directory exists
 
-PUPPETEER_CACHE_DIR=/opt/render/.cache/puppeteer
+PUPPETEER_CACHE_DIR=/opt/render/.cache/puppeteer/chrome/linux-139.0.7258.66/chrome-linux64/chrome
 
 mkdir -p $PUPPETEER_CACHE_DIR
 
@@ -29,11 +29,11 @@ echo "...Copying Puppeteer Cache from Build Cache"
 
 #Copying from the actual path where Puppeteer stores its Chrome binary
 
-cp -R /opt/render/project/src/.cache/puppeteer/chrome/ $PUPPETEER_CACHE_DIR
+cp -R /opt/render/.cache/puppeteer/chrome/linux-139.0.7258.66/chrome-linux64/chrome $PUPPETEER_CACHE_DIR
 
 else
 echo "...Storing Puppeteer Cache in Build Cache"
-cp -R $PUPPETEER_CACHE_DIR /opt/render/project/src/.cache/puppeteer/chrome/
+cp -R $PUPPETEER_CACHE_DIR /opt/render/.cache/puppeteer/chrome/linux-139.0.7258.66/chrome-linux64/chrome
 fi 
 
 
