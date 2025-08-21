@@ -96,12 +96,15 @@ authRouter.post('/signup', async (req, res) => {
 
         // Generate token
         const token = generateToken(user._id);
+        const isProduction = process.env.NODE_ENV === 'production';
+
         res.cookie('token', token, {
-            secure: true,
-            sameSite: 'None',
+            secure: isProduction,
+            sameSite: isProduction ? 'None' : 'Lax',
             httpOnly: true,
             path: '/',
-            expires: new Date(Date.now() + 48 * 3600000) // 8 hours
+            maxAge: 48 * 60 * 60 * 1000, // 48 hours
+            domain: isProduction ? '.outrankengine.online' : undefined
         });
 
         return res.status(201).json({
@@ -130,12 +133,15 @@ authRouter.post('/login', async (req, res) => {
 
         // Generate token
         const token = generateToken(registeredUser._id);
+        const isProduction = process.env.NODE_ENV === 'production';
+
         res.cookie('token', token, {
-            secure: true,
-            sameSite: 'None',
+            secure: isProduction,
+            sameSite: isProduction ? 'None' : 'Lax',
             httpOnly: true,
             path: '/',
-            expires: new Date(Date.now() + 48 * 3600000) // 8 hours
+            maxAge: 48 * 60 * 60 * 1000, // 48 hours
+            domain: isProduction ? '.outrankengine.online' : undefined
         });
 
         res.json({ success: true, message: 'Login successful ✅', data: registeredUser });
