@@ -101,7 +101,6 @@ authRouter.post('/signup', async (req, res) => {
             sameSite: 'None',
             httpOnly: true,
             path: '/',
-            domain: '.outrankengine.online',
             expires: new Date(Date.now() + 48 * 3600000) // 8 hours
         });
 
@@ -136,7 +135,6 @@ authRouter.post('/login', async (req, res) => {
             sameSite: 'None',
             httpOnly: true,
             path: '/',
-            domain: '.outrankengine.online',
             expires: new Date(Date.now() + 48 * 3600000) // 8 hours
         });
 
