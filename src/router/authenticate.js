@@ -86,7 +86,7 @@ authRouter.post('/signup', async (req, res) => {
             firstName: pendingUser.firstName,
             lastName: pendingUser.lastName,
             password: pendingUser.passwordHash,
-            isVerified: true
+            isVerified: true,
         });
 
         await user.save();
@@ -98,7 +98,7 @@ authRouter.post('/signup', async (req, res) => {
         const token = generateToken(user._id);
         res.cookie('token', token, {
             secure: true,
-            sameSite: 'None',
+            sameSite: 'Lax',
             httpOnly: true,
             path: '/',
             expires: new Date(Date.now() + 48 * 3600000) // 8 hours
@@ -132,7 +132,7 @@ authRouter.post('/login', async (req, res) => {
         const token = generateToken(registeredUser._id);
         res.cookie('token', token, {
             secure: true,
-            sameSite: 'None',
+            sameSite: 'Lax',
             httpOnly: true,
             path: '/',
             expires: new Date(Date.now() + 48 * 3600000) // 8 hours

@@ -49,7 +49,7 @@ const userSchema = new mongoose.Schema({
     },
     token: {
         type: Number,
-        default: 3000
+        default: 10000
     }
 
 }, { timestamps: true })
