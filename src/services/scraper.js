@@ -131,6 +131,8 @@ async function scraperUrl(urls) {
                 '--disable-features=VizDisplayCompositor',
                 '--single-procee',
                 '--no-zygote',
+                '--disable-accelerated-2d-canvas',
+                '--disable-gpu',
 
             ]
         });
@@ -208,7 +210,7 @@ async function scrapeSinglePage(browser, url) {
 
         await page.goto(url, {
             waitUntil: 'domcontentloaded',
-            timeout: 30000
+            timeout: 90000
         });
 
 
