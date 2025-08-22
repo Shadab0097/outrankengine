@@ -14,6 +14,7 @@ app.use(cors({
     origin: [
         'http://localhost:5173',
         'https://outrankengine.online',
+        'http://outrankengine.online',
         'https://www.outrankengine.online'
     ],
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
