@@ -105,7 +105,7 @@
 // module.exports = { scraperUrl };
 
 
-const { executablePath } = require('puppeteer');
+
 
 const puppeteer = require('puppeteer-extra');
 const StealthPlugin = require('puppeteer-extra-plugin-stealth');
@@ -136,7 +136,7 @@ async function scraperUrl(urls) {
 
             ]
         });
-        console.log(puppeteer.executablePath())
+
 
         // Determine if we have one URL or two URLs
         const isSingleUrl = typeof urls === 'string';
