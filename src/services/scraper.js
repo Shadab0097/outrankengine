@@ -129,7 +129,7 @@ async function scraperUrl(urls) {
                 '--disable-dev-shm-usage',
                 '--disable-web-security',
                 '--disable-features=VizDisplayCompositor',
-                '--single-procee',
+                '--single-process',
                 '--no-zygote',
                 '--disable-accelerated-2d-canvas',
                 '--disable-gpu',
