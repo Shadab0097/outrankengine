@@ -5,6 +5,7 @@ const app = express()
 const { authRouter } = require('./router/authenticate')
 const cookieParser = require('cookie-parser');
 const { profileRouter } = require('./router/profile')
+const { apiRouter } = require('./router/apiRouter')
 
 const cors = require('cors');
 const connectDB = require('./config/database');
@@ -12,12 +13,6 @@ const connectDB = require('./config/database');
 
 require("dotenv").config();
 
-// app.use((req, res, next) => {
-//     if (req.headers["x-forwarded-proto"] !== "https") {
-//         return res.redirect(301, "https://" + req.headers.host + req.url);
-//     }
-//     next();
-// });
 
 app.use(cors({
     origin: [
@@ -37,6 +32,8 @@ app.use(cookieParser())
 app.use('/', getScrapedRouter)
 app.use('/', authRouter)
 app.use('/', profileRouter)
+app.use('/', apiRouter)
+
 
 
 
