@@ -35,7 +35,8 @@ getScrapedRouter.post('/analyze', userAuth, async (req, res) => {
 
         return res.status(200).json({
             remainingTokens: requestedUser.token,
-            aiInsights
+            aiInsights,
+            scrapedContent
         });
 
     } catch (err) {
