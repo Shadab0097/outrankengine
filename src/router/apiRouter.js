@@ -7,7 +7,7 @@ const { GoogleGenAI } = require("@google/genai");
 const apiRouter = express.Router();
 require("dotenv").config();
 
-const genAI = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY_ });
+const genAI = new GoogleGenAI({ apiKey: process.env.MY_CUSTOM_GOOGLE_API_KEY });
 
 apiRouter.post('/deepseek', async (req, res) => {
 
