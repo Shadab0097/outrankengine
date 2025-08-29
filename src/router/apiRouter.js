@@ -28,7 +28,7 @@ apiRouter.post('/deepseek', async (req, res) => {
 
         while (attempt < maxRetries) {
             try {
-                const response = await genAI.models.generateContent({
+                response = await genAI.models.generateContent({
                     model: "gemini-2.5-pro",
                     contents: message
                 });
