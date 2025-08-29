@@ -7,7 +7,7 @@ const { GoogleGenAI } = require("@google/genai");
 const apiRouter = express.Router();
 require("dotenv").config();
 
-const genAI = new GoogleGenAI({ apiKey: process.env.MY_CUSTOM_GOOGLE_API_KEY });
+const genAI = new GoogleGenAI({ apiKey: process.env.MY_CUSTOME_GOOGLE_API_KEY });
 
 apiRouter.post('/deepseek', async (req, res) => {
 
@@ -22,10 +22,35 @@ apiRouter.post('/deepseek', async (req, res) => {
             return res.status(400).json({ error: "Invalid message format. Must be string or array." });
         }
 
-        const response = await genAI.models.generateContent({
-            model: "gemini-2.5-pro",
-            contents: message
-        });
+        const maxRetries = 5;
+        let attempt = 0;
+        let response;
+
+        while (attempt < maxRetries) {
+            try {
+                const response = await genAI.models.generateContent({
+                    model: "gemini-2.5-pro",
+                    contents: message
+                });
+                break; // Success - exit retry loop
+            } catch (err) {
+                // If 503 model overloaded error, retry with exponential backoff
+                if (err.response?.status === 503) {
+                    const delaySec = 2 ** attempt; // 1, 2, 4, 8, 16 seconds
+                    console.warn(`Gemini model overloaded, retrying in ${delaySec} seconds... (attempt ${attempt + 1})`);
+                    await new Promise(resolve => setTimeout(resolve, delaySec * 1000));
+                    attempt++;
+                } else {
+                    throw err; // Other errors - throw immediately
+                }
+            }
+        }
+
+        if (!response) {
+            return res.status(503).json({ error: "Model overloaded. Please try again later." });
+        }
+
+
 
         const candidateText =
             response.text ||
