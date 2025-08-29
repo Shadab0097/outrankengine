@@ -1,35 +1,45 @@
 // router/deepseekProxy.js
 const express = require('express');
 const axios = require('axios');
+const { GoogleGenAI } = require("@google/genai");
+
 
 const apiRouter = express.Router();
+require("dotenv").config();
 
-/**
- * POST /api/deepseek
- * Proxies the incoming body to OpenRouter and returns its response.
- */
+const genAI = new GoogleGenAI({ apiKey: process.env.GOOGLE_API_KEY });
+
 apiRouter.post('/deepseek', async (req, res) => {
-    const DEEPSEEK_API_KEY = process.env.DEEPSEEK_API_KEY;
-
-    if (!DEEPSEEK_API_KEY) {
-        return res.status(500).json({ error: 'API key not configured' });
-    }
 
     try {
-        const openRouterRes = await axios.post(
-            'https://openrouter.ai/api/v1/chat/completions',
-            req.body,                                // forward body as-is
-            {
-                headers: {
-                    'Authorization': `Bearer ${DEEPSEEK_API_KEY}`,
-                    'Content-Type': 'application/json',
-                },
-            },
-        );
+        const { message } = req.body;
+        let contents;
+        if (typeof message === "string") {
+            contents = [{ role: "user", text: message }];
+        } else if (Array.isArray(message)) {
+            contents = message;
+        } else {
+            return res.status(400).json({ error: "Invalid message format. Must be string or array." });
+        }
 
-        res.status(200).json(openRouterRes.data);  // return exact payload
+        const response = await genAI.models.generateContent({
+            model: "gemini-2.5-pro",
+            contents: message
+        });
+
+        const candidateText =
+            response.text ||
+            response.candidates?.[0]?.content?.parts?.[0]?.text ||
+            "";
+
+        candidateText.replace(/^```(?:json)?\s*/i, "")
+            // Remove trailing ```
+            .replace(/```$/i, "")
+            .trim();
+
+        res.status(200).json(candidateText);
     } catch (err) {
-        console.error('DeepSeek proxy error:', err.response?.data || err.message);
+        console.error('Gemini-content proxy error:', err.response?.data || err.message);
         if (err.response) {
             res.status(err.response.status).json(err.response.data);
         } else {
