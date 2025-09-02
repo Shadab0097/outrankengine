@@ -8,10 +8,13 @@ const apiRouter = express.Router();
 require("dotenv").config();
 
 const genAI = new GoogleGenAI({ apiKey: process.env.MY_CUSTOME_GOOGLE_API_KEY });
+// console.log(process.env.MY_CUSTOME_GOOGLE_API_KEY)
+
 
 apiRouter.post('/deepseek', async (req, res) => {
 
     try {
+        // console.log(process.env.MY_CUSTOME_GOOGLE_API_KEY)
         const { message } = req.body;
         let contents;
         if (typeof message === "string") {
@@ -30,12 +33,13 @@ apiRouter.post('/deepseek', async (req, res) => {
             try {
                 response = await genAI.models.generateContent({
                     model: "gemini-2.5-pro",
-                    contents: message
+                    contents
                 });
                 break; // Success - exit retry loop
             } catch (err) {
                 // If 503 model overloaded error, retry with exponential backoff
-                if (err.response?.status === 503) {
+                console.log(err)
+                if (err.response?.status === 503 || err.response?.status === 500) {
                     const delaySec = 2 ** attempt; // 1, 2, 4, 8, 16 seconds
                     console.warn(`Gemini model overloaded, retrying in ${delaySec} seconds... (attempt ${attempt + 1})`);
                     await new Promise(resolve => setTimeout(resolve, delaySec * 1000));
@@ -57,12 +61,12 @@ apiRouter.post('/deepseek', async (req, res) => {
             response.candidates?.[0]?.content?.parts?.[0]?.text ||
             "";
 
-        candidateText.replace(/^```(?:json)?\s*/i, "")
+        const resultText = candidateText.replace(/^```(?:json)?\s*/i, "")
             // Remove trailing ```
             .replace(/```$/i, "")
             .trim();
 
-        res.status(200).json(candidateText);
+        res.status(200).json(resultText);
     } catch (err) {
         console.error('Gemini-content proxy error:', err.response?.data || err.message);
         if (err.response) {

@@ -1,4 +1,6 @@
 const express = require('express')
+const rateLimit = require('express-rate-limit')
+
 
 const { scraperUrl } = require('../services/scraper')
 const { getGeminiSeoInsights } = require('../services/gemini')
@@ -9,8 +11,18 @@ const User = require('../model/user');
 
 const getScrapedRouter = express.Router()
 
+const seoLimiter = rateLimit({
+    windowMs: 60 * 1000,
+    max: 2,
+    message: {
+        error: "Too many request, please slow down"
+    },
+    standardHeaders: true,
+    legacyHeaders: false
+})
 
-getScrapedRouter.post('/analyze', userAuth, async (req, res) => {
+
+getScrapedRouter.post('/analyze', userAuth, seoLimiter, async (req, res) => {
 
     const requestedUser = req.user
     const tokenCost = 2500; // Fixed cost for comparison
@@ -48,7 +60,7 @@ getScrapedRouter.post('/analyze', userAuth, async (req, res) => {
 })
 
 
-getScrapedRouter.post('/compare', userAuth, async (req, res) => {
+getScrapedRouter.post('/compare', userAuth, seoLimiter, async (req, res) => {
     const requestedUser = req.user;
     const { competitorUrl, ourUrl } = req.body;
     console.log(typeof competitorUrl, ourUrl)
