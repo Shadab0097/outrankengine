@@ -66,8 +66,6 @@ authRouter.post('/signup', async (req, res) => {
             };
             await transport.sendMail(mailOptions)
 
-            console.log(`OTP for ${emailId}: ${generatedOtp}`);
-
             return res.status(200).json({
                 success: true,
                 message: 'OTP sent to your email. Please verify 📩'

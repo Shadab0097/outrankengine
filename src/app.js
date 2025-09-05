@@ -9,6 +9,7 @@ const { apiRouter } = require('./router/apiRouter')
 
 const cors = require('cors');
 const connectDB = require('./config/database');
+const imageRouter = require('./router/imageGeneration');
 
 
 require("dotenv").config();
@@ -28,11 +29,15 @@ app.use(cors({
 
 app.use(express.json());
 app.use(cookieParser())
+app.use(express.static('public'));
+
 
 app.use('/', getScrapedRouter)
 app.use('/', authRouter)
 app.use('/', profileRouter)
 app.use('/', apiRouter)
+app.use('/', imageRouter)
+
 
 
 
