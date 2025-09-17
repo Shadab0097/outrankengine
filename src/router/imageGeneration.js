@@ -36,7 +36,7 @@ const imageRouter = express.Router()
 require("dotenv").config();
 
 const ai = new GoogleGenAI({
-    apiKey: process.env.MY_CUSTOME_GOOGLE_API_KEY,
+    apiKey: process.env.MY_CUSTOM_GEMINI_API_KEY,
 });
 
 
