@@ -7,7 +7,7 @@ const { GoogleGenAI } = require("@google/genai");
 const apiRouter = express.Router();
 require("dotenv").config();
 
-const genAI = new GoogleGenAI({ apiKey: process.env.MY_CUSTOME_API_KEY });
+const genAI = new GoogleGenAI({ apiKey: process.env.MY_CUSTOM_API_KEY });
 // console.log(process.env.MY_CUSTOME_GOOGLE_API_KEY)
 
 
