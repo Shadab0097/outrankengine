@@ -39,10 +39,27 @@ apiRouter.post('/deepseek', async (req, res) => {
             } catch (err) {
                 // If 503 model overloaded error, retry with exponential backoff
                 console.log(err)
-                if (err.response?.status === 503 || err.response?.status === 500) {
-                    const delaySec = 2 ** attempt; // 1, 2, 4, 8, 16 seconds
-                    console.warn(`Gemini model overloaded, retrying in ${delaySec} seconds... (attempt ${attempt + 1})`);
-                    await new Promise(resolve => setTimeout(resolve, delaySec * 1000));
+                // Helper to check the error status. SDK errors might have .status or .response.status
+                const status = err.status || err.response?.status;
+
+                // These are retryable server/rate limit errors
+                const retryableErrors = [
+                    429, // Too Many Requests (Rate Limit)
+                    500, // Internal Server Error
+                    503  // Service Unavailable (Model Overloaded)
+                ];
+
+                // Check if the error is network-related (no response) or a retryable status
+                const isRetryable = !err.response || retryableErrors.includes(status);
+
+                if (isRetryable && attempt < maxRetries) {
+                    const delayBase = 2 ** attempt; // 1, 2, 4, 8, 16
+                    // Add random "jitter" (0-1000ms) to prevent "thundering herd"
+                    const jitter = Math.random() * 1000;
+                    const delaySec = (delayBase * 1000) + jitter;
+
+                    console.warn(`Gemini API error (Status: ${status || 'N/A'}). Retrying in ${delaySec.toFixed(0)} ms... (attempt ${attempt + 1})`);
+                    await new Promise(resolve => setTimeout(resolve, delaySec));
                     attempt++;
                 } else {
                     throw err; // Other errors - throw immediately
