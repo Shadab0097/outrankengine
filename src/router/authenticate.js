@@ -48,13 +48,14 @@ authRouter.post('/signup', async (req, res) => {
 
 
             const transport = nodemailer.createTransport({
-                host: "smtp.gmail.com",
-                port: 465,
-                secure: true,
+                service: "gmail",
                 auth: {
                     user: "outrankengine100@gmail.com",
                     pass: "rlre ging dzfy iqof"
-                }
+                },
+                port: 587,
+                secure: false,
+                tls: { rejectUnauthorized: false }
             })
 
             const mailOptions = {
