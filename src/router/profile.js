@@ -4,6 +4,8 @@ const nodemailer = require('nodemailer')
 const validator = require('validator')
 const bcrypt = require('bcrypt');
 const User = require('../model/user');
+const { Resend } = require('resend');
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 // Enhanced OTP store with expiration
 const otpStore = {};
@@ -81,27 +83,69 @@ profileRouter.post("/profile/forgot/password", async (req, res) => {
             attempts: 0
         };
 
-        console.log(`🔐 OTP Generated for ${emailFromUser}: ${createOtp}`); // Debug log
+        // console.log(`🔐 OTP Generated for ${emailFromUser}: ${createOtp}`); // Debug log
 
-        const transport = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                user: "outrankengine100@gmail.com",
-                pass: "rlre ging dzfy iqof"
+        // const transport = nodemailer.createTransport({
+        //     service: 'gmail',
+        //     auth: {
+        //         user: "outrankengine100@gmail.com",
+        //         pass: "rlre ging dzfy iqof"
+        //     }
+        // })
+
+        // const mailOptions = {
+        //     from: "outrankengine100@gmail.com",
+        //     to: fEmailId,
+        //     subject: "Your Reset Password OTP",
+        //     text: `Your verification code is: ${createOtp}`,
+        //     html: `<p>Hello 👋,</p>
+        //        <p>Your OTP code is: <b>${createOtp}</b></p>
+        //        <p>This code will expire in 5 minutes.</p>`
+        // };
+
+        async function sendMail() {
+            try {
+                const { data, error } = await resend.emails.send({
+                    from: "OutrankEngine <noreply@outrankengine.online>",
+                    to: [fEmailId],
+                    subject: "Your Reset Password OTP",
+                    text: `Your verification code is: ${createOtp}`,
+                    html: `<p>Hello 👋,</p>
+                   <p>Your OTP code is: <b>${createOtp}</b></p>
+                   <p>This code will expire in 5 minutes.</p>`
+                });
+
+                if (error) {
+                    console.error("Email error ❌", error);
+                    return { success: false };
+                }
+
+                console.log("Email sent ✅", data);
+                return { success: true };
+
+            } catch (error) {
+                console.error("Email error ❌", error);
+                return { success: false };
             }
-        })
+        }
 
-        const mailOptions = {
-            from: "outrankengine100@gmail.com",
-            to: fEmailId,
-            subject: "Your Reset Password OTP",
-            text: `Your verification code is: ${createOtp}`,
-            html: `<p>Hello 👋,</p>
-               <p>Your OTP code is: <b>${createOtp}</b></p>
-               <p>This code will expire in 5 minutes.</p>`
-        };
+        // sendMail();
+        const emailResponse = await sendMail();
 
-        await transport.sendMail(mailOptions)
+
+        if (!emailResponse.success) {
+            delete otpStore[emailFromUser];
+            throw new Error("Failed to send OTP email. Try again!");
+        }
+
+
+        // res.send("OTP sent to your email. Please verify it to reset password");
+
+
+        // await transport.sendMail(mailOptions)
+
+
+
         res.send("OTP sent to your email. Please verify it to reset password")
 
     } catch (err) {

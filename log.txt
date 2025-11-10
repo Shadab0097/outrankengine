@@ -1,0 +1,43 @@
+B:\seo-analyzer\src\router\authenticate.js:15
+const authRouter = express.Router();
+                   ^
+
+ReferenceError: express is not defined
+    at Object.<anonymous> (B:\seo-analyzer\src\router\authenticate.js:15:20)
+    at Module._compile (node:internal/modules/cjs/loader:1706:14)
+    at Object..js (node:internal/modules/cjs/loader:1839:10)
+    at Module.load (node:internal/modules/cjs/loader:1441:32)
+    at Function._load (node:internal/modules/cjs/loader:1263:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:328:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:237:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)
+    at node:internal/main/run_main_module:36:49
+
+Node.js v22.21.0
+
+[dotenv@17.2.3] injecting env (5) from .env -- tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' }
+
+Error: Command failed: node src/router/authenticate.js
+B:\seo-analyzer\src\router\authenticate.js:15
+const authRouter = express.Router();
+                   ^
+
+ReferenceError: express is not defined
+    at Object.<anonymous> (B:\seo-analyzer\src\router\authenticate.js:15:20)
+    at Module._compile (node:internal/modules/cjs/loader:1706:14)
+    at Object..js (node:internal/modules/cjs/loader:1839:10)
+    at Module.load (node:internal/modules/cjs/loader:1441:32)
+    at Function._load (node:internal/modules/cjs/loader:1263:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:328:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:237:24)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)
+    at node:internal/main/run_main_module:36:49
+
+Node.js v22.21.0
+
+    at genericNodeError (node:internal/errors:983:15)
+    at wrappedFn (node:internal/errors:537:14)
+    at ChildProcess.exithandler (node:child_process:417:12)
+    at ChildProcess.emit (node:events:519:28)
+    at maybeClose (node:internal/child_process:1101:16)
+    at ChildProcess._handle.onexit (node:internal/child_process:304:5)

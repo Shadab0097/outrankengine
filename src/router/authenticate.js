@@ -5,6 +5,12 @@ const jwt = require('jsonwebtoken');
 const User = require('../model/user');
 const nodemailer = require('nodemailer');
 const { fromAbortSignal } = require('puppeteer');
+require("dotenv").config();
+
+const { Resend } = require('resend');
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+
 
 const authRouter = express.Router();
 
@@ -47,27 +53,63 @@ authRouter.post('/signup', async (req, res) => {
             pendingUsers[emailId] = { firstName, lastName, emailId, passwordHash, otp: generatedOtp };
 
 
-            const transport = nodemailer.createTransport({
-                service: "gmail",
-                auth: {
-                    user: "outrankengine100@gmail.com",
-                    pass: "rlre ging dzfy iqof"
-                },
-                port: 587,
-                secure: false,
-                tls: { rejectUnauthorized: false }
-            })
+            //     const transport = nodemailer.createTransport({
+            //         service: "gmail",
+            //         auth: {
+            //             user: "outrankengine100@gmail.com",
+            //             pass: "rlre ging dzfy iqof"
+            //         },
+            //         port: 587,
+            //         secure: false,
+            //         tls: { rejectUnauthorized: false }
+            //     })
 
-            const mailOptions = {
-                from: "outrankengine100@gmail.com",
-                to: emailId,
-                subject: "Your OTP Verification Code",
-                text: `Your verification code is: ${generatedOtp}`,
-                html: `<p>Hello 👋,</p>
+            //     const mailOptions = {
+            //         from: "outrankengine100@gmail.com",
+            //         to: emailId,
+            //         subject: "Your OTP Verification Code",
+            //         text: `Your verification code is: ${generatedOtp}`,
+            //         html: `<p>Hello 👋,</p>
+            //  <p>Your OTP code is: <b>${generatedOtp}</b></p>
+            //  <p>This code will expire in 5 minutes.</p>`
+            //     };
+            //     await transport.sendMail(mailOptions)
+
+
+            async function sendMail() {
+                try {
+                    const { data, error } = await resend.emails.send({
+                        from: "OutrankEngine <noreply@outrankengine.online>",
+                        to: [emailId],
+                        subject: "Your OTP Verification Code",
+                        text: `Your verification code is: ${generatedOtp}`,
+                        html: `<p>Hello 👋,</p>
          <p>Your OTP code is: <b>${generatedOtp}</b></p>
          <p>This code will expire in 5 minutes.</p>`
-            };
-            await transport.sendMail(mailOptions)
+                    });
+                    if (error) {
+                        console.error("Email error ❌", error);
+                        return { success: false };
+                    }
+
+                    console.log("Email sent ✅", data);
+                    return { success: true };
+
+                } catch (error) {
+                    console.error("Email error ❌", error);
+                }
+            }
+
+
+            const emailResponse = await sendMail();
+
+
+            if (!emailResponse.success) {
+
+                throw new Error("Failed to send OTP email. Try again!");
+            }
+
+
 
             return res.status(200).json({
                 success: true,
