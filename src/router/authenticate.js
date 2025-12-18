@@ -88,15 +88,17 @@ authRouter.post('/signup', async (req, res) => {
          <p>This code will expire in 5 minutes.</p>`
                     });
                     if (error) {
-                        console.error("Email error ❌", error);
+                        console.error(error);
                         return { success: false };
                     }
 
-                    console.log("Email sent ✅", data);
+                    // console.log("Email sent ✅", data);
                     return { success: true };
 
                 } catch (error) {
-                    console.error("Email error ❌", error);
+                    console.error(error);
+                    return { success: false };
+
                 }
             }
 
