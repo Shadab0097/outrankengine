@@ -150,7 +150,7 @@ ${JSON.stringify(scrapedData, null, 2)}
 
 
       const response = await genAI.models.generateContent({
-        model: "gemini-2.5-pro",
+        model: "gemini-3-flash-preview",
         contents: prompt
       });
       // console.log(response)
